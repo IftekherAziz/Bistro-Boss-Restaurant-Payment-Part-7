@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Banner Css: */
+.carousel{
+    text-align: center;
+    max-height: 650px !important;
+}
+
