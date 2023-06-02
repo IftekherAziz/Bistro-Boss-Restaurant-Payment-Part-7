@@ -18,10 +18,10 @@ const Payment = () => {
   return (
     <div className="max-h-screen p-10 w-full ">
       <Helmet>
-        <title>Bistro Boss | Payment History</title>
+        <title>Bistro Boss | Payment</title>
       </Helmet>
       <SectionTitle
-        heading="Payment History "
+        heading="Payment "
         subHeading="Please Pay Your Bill"
       ></SectionTitle>
       <div className="mt-20 bg-zinc-50">

@@ -47,7 +47,7 @@ const MyCart = () => {
       <div className="border mb-3 bg-white rounded px-3 font-semibold h-[60px] flex justify-between items-center">
         <h3 className="text-xl ">Total Items: {cart.length}</h3>
         <h3 className="text-xl">Total Price: ${totalPrice}</h3>
-        <Link to="/dashboard/payment-history">
+        <Link to="/dashboard/payment">
           <button className="btn btn-warning btn-md">Pay Now</button>
         </Link>
       </div>

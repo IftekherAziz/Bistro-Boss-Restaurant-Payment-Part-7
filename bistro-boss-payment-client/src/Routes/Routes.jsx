@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
         element: <Reservations></Reservations>,
       },
       {
-        path: "payment-history",
+        path: "payment",
         element: <Payment></Payment>,
       },
       {

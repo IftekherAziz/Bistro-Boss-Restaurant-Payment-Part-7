@@ -34,10 +34,6 @@ const NavBar = () => {
       <li>
         <Link to="/contact-us">Contact us</Link>
       </li>
-     {/*  <li>
-        <Link to="secret">Secret</Link>
-      </li> */}
-
       <li>
         <Link to="/dashboard/my-cart">
           <span className="flex gap-2">

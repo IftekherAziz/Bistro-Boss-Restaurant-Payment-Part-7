@@ -57,7 +57,7 @@ const Dashboard = () => {
               </li>
               <li>
                 <NavLink to="/dashboard/home">
-                  <FaHome></FaHome> Admin Home
+                  <FaHome></FaHome> Dashboard
                 </NavLink>
               </li>
               <li>
@@ -89,7 +89,7 @@ const Dashboard = () => {
               </li>
               <li>
                 <NavLink to="/dashboard/user-home">
-                  <FaHome></FaHome> User Home
+                  <FaHome></FaHome> Dashboard
                 </NavLink>
               </li>
               <li>
@@ -106,8 +106,8 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/payment-history">
-                  <FaWallet></FaWallet> Payment History
+                <NavLink to="/dashboard/payment">
+                  <FaWallet></FaWallet> Payment
                 </NavLink>
               </li>
             </>
