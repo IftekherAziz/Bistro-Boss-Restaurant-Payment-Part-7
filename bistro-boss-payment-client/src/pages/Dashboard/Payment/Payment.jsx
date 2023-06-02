@@ -27,7 +27,7 @@ const Payment = () => {
       <div className="mt-20 bg-zinc-50">
         {/* Use stripe checkout form using elements and stripePromise props */}
         <Elements stripe={stripePromise}>
-          <CheckoutForm price={price}></CheckoutForm>
+          <CheckoutForm cart={cart} price={price}></CheckoutForm>
         </Elements>
       </div>
     </div>

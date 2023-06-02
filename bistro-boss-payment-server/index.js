@@ -221,7 +221,12 @@ async function run() {
         })
 
         // POST payment data on MongoDB:
-       
+        app.post('/payments', verifyJWT, async (req, res) => {
+            const payment = req.body;
+            const insertResult = await paymentCollection.insertOne(payment);
+            res.send(insertResult);
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
