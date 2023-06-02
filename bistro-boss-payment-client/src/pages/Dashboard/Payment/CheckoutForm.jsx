@@ -5,69 +5,70 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 
 const CheckoutForm = ({ price }) => {
-  const { user } = useAuth();
   const stripe = useStripe();
   const elements = useElements();
-  const [cardError, setCardError] = useState("");
+  const { user } = useAuth();
   const [axiosSecure] = useAxiosSecure();
+  const [cardError, setCardError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the page loads
-    axiosSecure
-      .post("/create-payment-intent", { price })
-      .then((res) => {
-        console.log(res.data.clientSecret);
+    if (price > 0) {
+      axiosSecure.post("/create-payment-intent", { price }).then((res) => {
+        // console.log(res.data.clientSecret);
         setClientSecret(res.data.clientSecret);
-      })
-      .catch((err) => {
-        console.log(err);
       });
+    }
   }, [price, axiosSecure]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
     const card = elements.getElement(CardElement);
     if (card === null) {
-      // Can't find a form element on the page.
       return;
     }
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+
+    const { error } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
+
     if (error) {
-      console.log("Error", error);
+      console.log("error", error);
       setCardError(error.message);
-    }
-    if (paymentMethod) {
+    } else {
       setCardError("");
-      console.log("PaymentMethod", paymentMethod);
+      // console.log('payment method', paymentMethod)
     }
+
+    setProcessing(true);
+
     const { paymentIntent, error: confirmError } =
       await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: card,
           billing_details: {
-            name: user?.displayName || "Annonymous",
-            email: user?.email || "Annonymous",
+            email: user?.email || "unknown",
+            name: user?.displayName || "anonymous",
           },
         },
       });
+
     if (confirmError) {
-      console.log("Error", confirmError);
-      setCardError(confirmError.message);
+      console.log(confirmError);
     }
-    if (paymentIntent) {
-      console.log("PaymentIntent", paymentIntent);
-      setCardError("");
+
+    console.log("payment intent", paymentIntent);
+    setProcessing(false);
+    if (paymentIntent.status === "succeeded") {
+      setTransactionId(paymentIntent.id);
     }
   };
 
@@ -93,13 +94,18 @@ const CheckoutForm = ({ price }) => {
         <button
           className="btn mt-6 btn-block"
           type="submit"
-          disabled={!stripe || !clientSecret}
+          disabled={!stripe || !clientSecret || processing}
         >
           Pay Now
         </button>
       </form>
       {cardError && (
         <p className="mt-6 text-center text-red-600">{cardError}</p>
+      )}
+      {transactionId && (
+        <p className="text-green-500 text-center font-medium">
+          Transaction complete with transactionId: {transactionId}
+        </p>
       )}
     </div>
   );
