@@ -11,12 +11,12 @@ import Dashboard from "../Layout/Dashboard";
 import MyCart from "../pages/Dashboard/MyCart/MyCart";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import AdminRoute from "./AdminRoute";
-import PaymentHistrory from "../pages/Dashboard/PaymentHistrory/PaymentHistrory";
 import Reservations from "../pages/Dashboard/Reservations/Reservations";
 import UserHome from "../pages/Dashboard/UserHome/UserHome";
 import ContactUs from "../pages/ContactUs/ContactUs";
 import AddItems from "../pages/Dashboard/AddItems/AddItems";
 import ManageItems from "../pages/Dashboard/ManageItems/ManageItems";
+import Payment from "../pages/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -68,7 +68,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "payment-history",
-        element: <PaymentHistrory></PaymentHistrory>,
+        element: <Payment></Payment>,
       },
       {
         path: "my-cart",

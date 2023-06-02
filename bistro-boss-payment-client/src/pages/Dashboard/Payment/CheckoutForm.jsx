@@ -55,7 +55,7 @@ const CheckoutForm = () => {
           }}
         />
         <button
-          className="btn mt-6  btn-primary btn-block"
+          className="btn mt-6 btn-block"
           type="submit"
           disabled={!stripe}
         >
