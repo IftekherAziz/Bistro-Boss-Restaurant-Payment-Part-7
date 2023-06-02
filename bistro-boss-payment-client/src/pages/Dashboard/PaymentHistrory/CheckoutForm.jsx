@@ -26,18 +26,18 @@ const CheckoutForm = () => {
       card,
     });
     if (error) {
-      console.log("[error]", error);
+      console.log("Error", error);
       setCardError(error.message);
     }
     if (paymentMethod) {
       setCardError("");
-      console.log("[PaymentMethod]", paymentMethod);
+      console.log("PaymentMethod", paymentMethod);
     }
   };
 
   return (
-    <div>
-      <form className="w-2/3 m-8 mx-auto" onSubmit={handleSubmit}>
+    <div className="bg-zinc-50">
+      <form className="w-full md:w-2/3 m-8 mx-auto" onSubmit={handleSubmit}>
         <CardElement
           options={{
             style: {
@@ -62,7 +62,7 @@ const CheckoutForm = () => {
           Pay Now
         </button>
       </form>
-      {cardError && <p className="mt-10 text-center text-red-600">{cardError}</p>}
+      {cardError && <p className="mt-6 text-center text-red-600">{cardError}</p>}
     </div>
   );
 };
