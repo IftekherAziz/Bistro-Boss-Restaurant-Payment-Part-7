@@ -4,7 +4,6 @@ import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
 const PaymentHistrory = () => {
   return (
@@ -16,10 +15,12 @@ const PaymentHistrory = () => {
         heading="Payment History "
         subHeading="Please Pay Your Bill"
       ></SectionTitle>
-      {/* Use stripe checkout form using elements and stripePromise props */}
-      <Elements stripe={stripePromise}>
-        <CheckoutForm></CheckoutForm>
-      </Elements>
+      <div className="mt-20 bg-zinc-50">
+        {/* Use stripe checkout form using elements and stripePromise props */}
+        <Elements stripe={stripePromise}>
+          <CheckoutForm></CheckoutForm>
+        </Elements>
+      </div>
     </div>
   );
 };

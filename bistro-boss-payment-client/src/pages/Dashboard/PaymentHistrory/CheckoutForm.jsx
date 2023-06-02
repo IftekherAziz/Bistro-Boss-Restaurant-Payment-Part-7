@@ -1,9 +1,11 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useState } from "react";
 
 const CheckoutForm = () => {
   //
   const stripe = useStripe();
   const elements = useElements();
+  const [cardError, setCardError] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,11 +21,23 @@ const CheckoutForm = () => {
       // Can't find a form element on the page.
       return;
     }
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card,
+    });
+    if (error) {
+      console.log("[error]", error);
+      setCardError(error.message);
+    }
+    if (paymentMethod) {
+      setCardError("");
+      console.log("[PaymentMethod]", paymentMethod);
+    }
   };
 
   return (
     <div>
-      <form className="w-2/3 m-8" onSubmit={handleSubmit}>
+      <form className="w-2/3 m-8 mx-auto" onSubmit={handleSubmit}>
         <CardElement
           options={{
             style: {
@@ -41,13 +55,14 @@ const CheckoutForm = () => {
           }}
         />
         <button
-          className="btn btn-primary btn-sm mt-4"
+          className="btn mt-6  btn-primary btn-block"
           type="submit"
           disabled={!stripe}
         >
-          Pay
+          Pay Now
         </button>
       </form>
+      {cardError && <p className="mt-10 text-center text-red-600">{cardError}</p>}
     </div>
   );
 };
