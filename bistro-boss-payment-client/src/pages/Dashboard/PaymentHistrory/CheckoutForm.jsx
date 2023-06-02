@@ -13,7 +13,7 @@ const CheckoutForm = () => {
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-    
+
     const card = elements.getElement(CardElement);
     if (card === null) {
       // Can't find a form element on the page.
@@ -43,7 +43,7 @@ const CheckoutForm = () => {
         <button
           className="btn btn-primary btn-sm mt-4"
           type="submit"
-          disabled={!stripe || !clientSecret || processing}
+          disabled={!stripe}
         >
           Pay
         </button>
