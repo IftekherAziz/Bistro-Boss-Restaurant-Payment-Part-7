@@ -1,11 +1,29 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useEffect } from "react";
 import { useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 
-const CheckoutForm = () => {
-  //
+const CheckoutForm = ({ price }) => {
+  const { user } = useAuth();
   const stripe = useStripe();
   const elements = useElements();
   const [cardError, setCardError] = useState("");
+  const [axiosSecure] = useAxiosSecure();
+  const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+    // Create PaymentIntent as soon as the page loads
+    axiosSecure
+      .post("/create-payment-intent", { price })
+      .then((res) => {
+        console.log(res.data.clientSecret);
+        setClientSecret(res.data.clientSecret);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [price, axiosSecure]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -33,6 +51,24 @@ const CheckoutForm = () => {
       setCardError("");
       console.log("PaymentMethod", paymentMethod);
     }
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: user?.displayName || "Annonymous",
+            email: user?.email || "Annonymous",
+          },
+        },
+      });
+    if (confirmError) {
+      console.log("Error", confirmError);
+      setCardError(confirmError.message);
+    }
+    if (paymentIntent) {
+      console.log("PaymentIntent", paymentIntent);
+      setCardError("");
+    }
   };
 
   return (
@@ -57,12 +93,14 @@ const CheckoutForm = () => {
         <button
           className="btn mt-6 btn-block"
           type="submit"
-          disabled={!stripe}
+          disabled={!stripe || !clientSecret}
         >
           Pay Now
         </button>
       </form>
-      {cardError && <p className="mt-6 text-center text-red-600">{cardError}</p>}
+      {cardError && (
+        <p className="mt-6 text-center text-red-600">{cardError}</p>
+      )}
     </div>
   );
 };
