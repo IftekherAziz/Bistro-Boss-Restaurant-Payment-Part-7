@@ -111,9 +111,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
             </>
-          )}
-
-          {/* <hr className="my-5"></hr> */}
+          )}      
           <div className="divider"></div>
           <li>
             <NavLink to="/">
